@@ -36,7 +36,7 @@ const Register = () => {
           <div className="mt-5 text-center">
             <span className="text-gray-500">
               Already have an account?
-              <Link to="/login" className="text-primary">
+              <Link to="/login" className="text-primary ml-1">
                 Login
               </Link>
             </span>

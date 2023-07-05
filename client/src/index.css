@@ -31,4 +31,5 @@ input:hover {
 
 button {
   height: 45px !important;
+  box-shadow: none !important;
 }

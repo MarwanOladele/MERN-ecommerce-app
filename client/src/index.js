@@ -15,10 +15,12 @@ root.render(
             colorPrimary: "#40513B",
             colorPrimaryHover: "#40513B",
             borderRadius: "2px",
+            boxShadow: "none", 
           },
         },
         token: {
           borderRadius: "2px",
+          colorPrimary: "#40513B",
         },
       }}
     >
