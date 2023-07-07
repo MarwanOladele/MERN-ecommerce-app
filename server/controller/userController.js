@@ -42,7 +42,9 @@ const login = async (req, res) => {
     }
 
     // create and assign token
-    const token = jwt.sign({ userId: user._id }, process.env.TOKEN_SECRET);
+    const token = jwt.sign({ userId: user._id }, process.env.TOKEN_SECRET, {
+      expiresIn: "1d",
+    });
 
     res.send({
       sucess: true,
