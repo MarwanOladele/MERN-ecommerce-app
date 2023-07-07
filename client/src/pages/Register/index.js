@@ -1,6 +1,7 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { Link } from "react-router-dom";
 import Divider from "../../components/DIvider";
+import { RegisterUser } from "../../apicalls/user";
 
 const rules = [
   {
@@ -10,8 +11,17 @@ const rules = [
 ];
 
 const Register = () => {
-  const onFinish = (values) => {
-    console.log("Sucess", values);
+  const onFinish = async (values) => {
+    try {
+      const response = await RegisterUser(values);
+      if (response) {
+        message.success(response.message);
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
   };
   return (
     <div className="h-screen bg-primary flex justify-center items-center">

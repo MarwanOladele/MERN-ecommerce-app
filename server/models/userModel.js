@@ -14,6 +14,18 @@ const userSchema = new mongoose.Schema(
       type: "string",
       required: true,
     },
+    role: {
+      type: "string",
+      default: "user",
+    },
+    status: {
+      type: "string",
+      default: "active",
+    },
+    profilePicture: {
+      type: "string",
+      default: "",
+    },
   },
   {
     timestamps: true,
