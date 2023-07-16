@@ -13,12 +13,12 @@ const registerUser = async (req, res) => {
     // hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
-    req.body.password = hashedPassword
+    req.body.password = hashedPassword;
 
     // save the user
     const newUser = new User(req.body);
     await newUser.save();
-    res.send({ sucess: true, message: "User created successfully" })
+    res.send({ sucess: true, message: "User created successfully" });
   } catch (error) {
     res.send({ sucess: false, message: error.message });
   }
@@ -56,7 +56,21 @@ const login = async (req, res) => {
   }
 };
 
+const getCurrentUser = async (req, res) => {
+  try {
+    const user = await findById(req.body.userId);
+    res.send({
+      sucess: true,
+      message: "User fetched successfully",
+      data: user,
+    });
+  } catch (error) {
+    res.send({ sucess: false, message: error.message });
+  }
+};
+
 module.exports = {
   registerUser,
   login,
+  getCurrentUser,
 };
