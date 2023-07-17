@@ -12,3 +12,6 @@ router.post("/login", login);
 router.get("/get-current-user", authMiddleware, getCurrentUser);
 
 module.exports = router;
+
+
+

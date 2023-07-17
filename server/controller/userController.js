@@ -58,7 +58,7 @@ const login = async (req, res) => {
 
 const getCurrentUser = async (req, res) => {
   try {
-    const user = await findById(req.body.userId);
+    const user = await User.findById(req.body.userId);
     res.send({
       sucess: true,
       message: "User fetched successfully",
