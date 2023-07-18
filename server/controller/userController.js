@@ -67,7 +67,7 @@ const getCurrentUser = async (req, res) => {
   } catch (error) {
     res.send({ sucess: false, message: error.message });
   }
-};
+}
 
 module.exports = {
   registerUser,
