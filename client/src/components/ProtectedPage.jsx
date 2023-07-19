@@ -30,13 +30,16 @@ const ProtectedPage = ({ children }) => {
     }
   }, []);
   return (
-    <div>
-      {user && (
-        <div className="p-5">
+    user && (
+      <div className="">
+        {/* header */}
+        <div className=""></div>
+        {/* content */}
+        <div className="">
           {user.name} {children}
         </div>
-      )}
-    </div>
+      </div>
+    )
   );
 };
 
