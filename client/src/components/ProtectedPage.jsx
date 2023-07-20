@@ -2,14 +2,19 @@ import { useEffect, useState } from "react";
 import { message } from "antd";
 import { GetCurrentUser } from "../apicalls/user";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { SetLoader } from "../redux/loadersSlice";
 
 const ProtectedPage = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const validateToken = async () => {
     try {
+      dispatch(SetLoader(true));
       const response = await GetCurrentUser();
+      dispatch(SetLoader(false));
       if (response.sucess) {
         setUser(response.data);
       } else {
@@ -17,6 +22,7 @@ const ProtectedPage = ({ children }) => {
         message.error(response.message);
       }
     } catch (error) {
+      dispatch(SetLoader(false));
       navigate("/login");
       message.error(error.message);
     }
@@ -37,7 +43,9 @@ const ProtectedPage = ({ children }) => {
           <h1 className="text-2xl  text-white">MARWAN MP</h1>
           <div className="bg-white py-2 px-5 rounded flex gap-1 items-center">
             <i className="ri-shield-user-line"></i>
-            <span className="underline cursor-pointer uppercase ">{user.name}</span>
+            <span className="underline cursor-pointer uppercase ">
+              {user.name}
+            </span>
             <i
               className="ri-logout-box-r-line ml-10 cursor-pointer"
               onClick={() => {
