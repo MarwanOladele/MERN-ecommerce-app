@@ -33,11 +33,22 @@ const ProtectedPage = ({ children }) => {
     user && (
       <div className="">
         {/* header */}
-        <div className=""></div>
-        {/* content */}
-        <div className="">
-          {user.name} {children}
+        <div className="flex justify-between items-center bg-primary p-5">
+          <h1 className="text-2xl  text-white">MARWAN MP</h1>
+          <div className="bg-white py-2 px-5 rounded flex gap-1 items-center">
+            <i className="ri-shield-user-line"></i>
+            <span className="underline cursor-pointer uppercase ">{user.name}</span>
+            <i
+              className="ri-logout-box-r-line ml-10 cursor-pointer"
+              onClick={() => {
+                localStorage.removeItem("token");
+                navigate("/login");
+              }}
+            ></i>
+          </div>
         </div>
+        {/* content */}
+        <div className="">{children}</div>
       </div>
     )
   );
