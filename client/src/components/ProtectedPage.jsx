@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { message } from "antd";
 import { GetCurrentUser } from "../apicalls/user";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SetLoader } from "../redux/loadersSlice";
+import { SetUser } from "../redux/usersSlice";
 
 const ProtectedPage = ({ children }) => {
-  const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
 
   const validateToken = async () => {
     try {
@@ -16,7 +17,7 @@ const ProtectedPage = ({ children }) => {
       const response = await GetCurrentUser();
       dispatch(SetLoader(false));
       if (response.sucess) {
-        setUser(response.data);
+        dispatch(SetUser(response.data));
       } else {
         navigate("/login");
         message.error(response.message);
