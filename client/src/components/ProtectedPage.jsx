@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { message } from "antd";
 import { GetCurrentUser } from "../apicalls/user";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SetLoader } from "../redux/loadersSlice";
 import { SetUser } from "../redux/usersSlice";
@@ -41,10 +41,18 @@ const ProtectedPage = ({ children }) => {
       <div className="">
         {/* header */}
         <div className="flex justify-between items-center bg-primary p-5">
-          <h1 className="text-2xl  text-white">MARWAN MP</h1>
+          <h1
+            className="text-2xl  text-white cursor-pointer"
+            onClick={() => navigate("/")}
+          >
+            MARWAN MP
+          </h1>
           <div className="bg-white py-2 px-5 rounded flex gap-1 items-center">
             <i className="ri-shield-user-line"></i>
-            <span className="underline cursor-pointer uppercase ">
+            <span
+              className="underline cursor-pointer uppercase "
+              onClick={() => navigate("/profile")}
+            >
               {user.name}
             </span>
             <i
@@ -57,7 +65,7 @@ const ProtectedPage = ({ children }) => {
           </div>
         </div>
         {/* content */}
-        <div className="">{children}</div>
+        <div className="p-5">{children}</div>
       </div>
     )
   );
