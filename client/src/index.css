@@ -10,14 +10,18 @@ root {
   padding: 0;
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif !important;
+  /* color: #373737; */
+  font-size: 15px;
 }
 
-input {
-  height: 45px !important;
+input, select, textarea {
+  min-height: 45px !important;
+  width: 100% !important;
   border: 1px solid #b9b9b9;
+  
 }
 
-input:focus {
+input:focus, select:focus, textarea:focus {
   outline: none;
   border: 1px solid #453e3e !important;
   box-shadow: none !important;
