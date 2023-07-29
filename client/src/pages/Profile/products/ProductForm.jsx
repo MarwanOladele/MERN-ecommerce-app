@@ -29,16 +29,18 @@ const ProductForm = ({ showProductForm, setShowproductForm }) => {
     },
   ];
 
-  const formRef = useRef(null);
+  const formRef = useRef(null)
 
   const onFinish = (values) => {
-    console.log(values);
+    console.log(values)
   };
 
   return (
     <Modal
       title=""
       open={showProductForm}
+
+
       onCancel={() => setShowproductForm(false)}
       centered
       width={1000}
