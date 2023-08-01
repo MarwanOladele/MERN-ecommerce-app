@@ -6,12 +6,12 @@ const addNewProduct = async (req, res) => {
     const newProduct = new Product(req.body);
     await newProduct.save();
     res.send({
-      status: true,
+      sucess: true,
       message: "Product added successfully",
     });
   } catch (error) {
     res.send({
-      status: false,
+      sucess: false,
       message: error.message,
     });
   }
@@ -22,12 +22,12 @@ const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find();
     res.send({
-      status: true,
+      sucess: true,
       message: products,
     });
   } catch (error) {
     res.send({
-      status: false,
+      sucess: false,
       message: error.message,
     });
   }

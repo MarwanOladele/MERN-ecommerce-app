@@ -1,47 +1,65 @@
-import { Col, Form, Input, Modal, Row, Tabs } from "antd";
+import { Col, Form, Input, Modal, Row, Tabs, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import React, { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { SetLoader } from "../../../redux/loadersSlice";
+import { AddProduct } from "../../../apicalls/product";
 
-const ProductForm = ({ showProductForm, setShowproductForm }) => {
-  const additionalThings = [
-    {
-      label: "Bill Available",
-      name: "billAvailable",
-    },
-    {
-      label: "Warranty Available",
-      name: "warrantyAvailable",
-    },
-    {
-      label: "Accessories Available",
-      name: "accessoriesAvailable",
-    },
-    {
-      label: "Box Available",
-      name: "boxAvailable",
-    },
-  ];
+const additionalThings = [
+  {
+    label: "Bill Available",
+    name: "billAvailable",
+  },
+  {
+    label: "Warranty Available",
+    name: "warrantyAvailable",
+  },
+  {
+    label: "Accessories Available",
+    name: "accessoriesAvailable",
+  },
+  {
+    label: "Box Available",
+    name: "boxAvailable",
+  },
+];
 
-  const rules = [
-    {
-      required: true,
-      message: "Required",
-    },
-  ];
+const rules = [
+  {
+    required: true,
+    message: "Required",
+  },
+];
+const ProductForm = ({ showProductForm, setShowProductForm }) => {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
 
-  const formRef = useRef(null)
-
-  const onFinish = (values) => {
-    console.log(values)
+  const onFinish = async (values) => {
+    try {
+      values.seller = user._id;
+      values.status = "pending";
+      dispatch(SetLoader(true));
+      const response = await AddProduct(values);
+      dispatch(SetLoader(false));
+      if (response.sucess) {
+        message.success(response.message);
+        setShowProductForm(false);
+      } else {
+        dispatch(SetLoader(false));
+        message.error(response.message);
+      }
+    } catch (error) {
+      dispatch(SetLoader(false));
+      message.error(error.message);
+    }
   };
+  const formRef = useRef(null);
 
   return (
     <Modal
       title=""
       open={showProductForm}
-
-
-      onCancel={() => setShowproductForm(false)}
+      onCancel={() => setShowProductForm(false)}
       centered
       width={1000}
       okText="Save"
@@ -54,7 +72,7 @@ const ProductForm = ({ showProductForm, setShowproductForm }) => {
               <Input type="text" />
             </Form.Item>
 
-            <Form.Item label="Desciption" name="desciption" rules={rules}>
+            <Form.Item label="Description" name="description" rules={rules}>
               <TextArea type="text" />
             </Form.Item>
 
@@ -83,18 +101,23 @@ const ProductForm = ({ showProductForm, setShowproductForm }) => {
             </Row>
 
             <div className="flex gap-10">
-              {additionalThings.map((thing, i) => {
+              {additionalThings.map((item, i) => {
                 return (
-                  <Form.Item label={thing.label} name={thing.name} key={i}>
+                  <Form.Item
+                    label={item.label}
+                    name={item.name}
+                    key={item.name}
+                    valuePropName="checked"
+                  >
                     <Input
                       type="checkbox"
-                      value={thing.name}
+                      value={item.name}
                       onChange={(e) => {
                         formRef.current.setFieldsValue({
-                          [thing.name]: e.target.checked,
+                          [item.name]: e.target.checked,
                         });
                       }}
-                      checked={formRef.current?.getFieldsValue(thing.name)}
+                      checked={formRef.current?.getFieldValue(item.name)}
                     />
                   </Form.Item>
                 );
