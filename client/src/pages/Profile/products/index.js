@@ -7,6 +7,7 @@ import { SetLoader } from "../../../redux/loadersSlice";
 
 const Products = () => {
   const [showProductForm, setShowProductForm] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
 
@@ -50,13 +51,23 @@ const Products = () => {
       dataIndex: "age",
     },
     {
+      title: "Status",
+      dataIndex: "status",
+    },
+    {
       title: "Action",
       dataIndex: "action",
       render: (text, record) => {
         return (
           <div className="flex gap-5">
             <i className="ri-delete-bin-line"></i>
-            <i className="ri-pencil-line"></i>
+            <i
+              className="ri-pencil-line"
+              onClick={() => {
+                setSelectedProduct(record);
+                setShowProductForm(true);
+              }}
+            ></i>
           </div>
         );
       },
@@ -68,6 +79,7 @@ const Products = () => {
         <Button
           type="default"
           onClick={() => {
+            setSelectedProduct(null);
             setShowProductForm(true);
           }}
         >
@@ -79,6 +91,9 @@ const Products = () => {
         <ProductForm
           showProductForm={showProductForm}
           setShowProductForm={setShowProductForm}
+          selectedProduct={selectedProduct}
+          setSelectedProduct={setSelectedProduct}
+          getData={getData}
         />
       )}
     </div>
