@@ -2,8 +2,9 @@ import { Button, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import ProductForm from "./ProductForm";
 import { useDispatch } from "react-redux";
-import { GetProduct } from "../../../apicalls/product";
+import { DeleteProduct, GetProduct } from "../../../apicalls/product";
 import { SetLoader } from "../../../redux/loadersSlice";
+import moment from 'moment'
 
 const Products = () => {
   const [showProductForm, setShowProductForm] = useState(false);
@@ -28,6 +29,24 @@ const Products = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  const deleteProduct = async (id) => {
+    try {
+      dispatch(SetLoader(true));
+      const response = await DeleteProduct(id);
+      if (response.sucess) {
+        dispatch(SetLoader(false));
+        getData();
+        message.success(response.message);
+      } else {
+        dispatch(SetLoader(false));
+        message.error(response.message);
+      }
+    } catch (error) {
+      dispatch(SetLoader(false));
+      message.error(error.message);
+    }
+  };
 
   const columns = [
     {
@@ -55,12 +74,22 @@ const Products = () => {
       dataIndex: "status",
     },
     {
+      title: "Added on",
+      dataIndex: "createdAt",
+      render: (text, record) => {
+        return moment(record.createdAt).format("DD/MM/YYYY hh:mm A");
+      },
+    },
+    {
       title: "Action",
       dataIndex: "action",
       render: (text, record) => {
         return (
           <div className="flex gap-5">
-            <i className="ri-delete-bin-line"></i>
+            <i
+              className="ri-delete-bin-line"
+              onClick={() => deleteProduct(record._id)}
+            ></i>
             <i
               className="ri-pencil-line"
               onClick={() => {
