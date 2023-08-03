@@ -4,7 +4,7 @@ import ProductForm from "./ProductForm";
 import { useDispatch } from "react-redux";
 import { DeleteProduct, GetProduct } from "../../../apicalls/product";
 import { SetLoader } from "../../../redux/loadersSlice";
-import moment from 'moment'
+import moment from "moment";
 
 const Products = () => {
   const [showProductForm, setShowProductForm] = useState(false);
