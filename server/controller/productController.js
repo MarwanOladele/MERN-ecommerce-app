@@ -1,4 +1,5 @@
 const Product = require("../models/productModel");
+const cloudinary = require("../cloudinary/config");
 
 // add new product
 const addNewProduct = async (req, res) => {
@@ -65,4 +66,35 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-module.exports = { addNewProduct, getAllProducts, editProduct, deleteProduct };
+//handle image upload to cloudinary
+const imageUpload = async (req, res) => {
+  try {
+    //upload image to cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "marwanMP",
+    });
+
+    const productId = req.body.productId;
+    await Product.findByIdAndUpdate(productId, {
+      $push: { images: result.secure_url },
+    });
+    res.send({
+      sucess: true,
+      message: "image uploaded successfully",
+      result,
+    });
+  } catch (error) {
+    res.send({
+      sucess: false,
+      message: error.message,
+    });
+  }
+};
+
+module.exports = {
+  addNewProduct,
+  getAllProducts,
+  editProduct,
+  deleteProduct,
+  imageUpload,
+};

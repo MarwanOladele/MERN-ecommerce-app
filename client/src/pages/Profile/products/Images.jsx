@@ -1,5 +1,8 @@
-import { Button, Upload } from "antd";
+import { Button, Upload, message } from "antd";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { SetLoader } from "../../../redux/loadersSlice";
+import { UploadProductImage } from "../../../apicalls/product";
 
 const Images = ({
   selectedProduct,
@@ -7,10 +10,29 @@ const Images = ({
   setSelectedProduct,
   setShowProductForm,
 }) => {
+  const dispatch = useDispatch();
   const [file, setFile] = useState(null);
 
-  const upload = () => {
-    console.log(file);
+  const upload = async () => {
+    try {
+      dispatch(SetLoader(true));
+      // Upload Image to Cloudinary and Get the URL
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("productId", selectedProduct._id);
+      const response = await UploadProductImage(formData);
+      dispatch(SetLoader(false));
+      if (response.sucess) {
+        message.success(response.message);
+        getData();
+      } else {
+        message.error(response.message);
+        dispatch(SetLoader(false));
+      }
+    } catch (error) {
+      dispatch(SetLoader(false));
+      message.error(error.message);
+    }
   };
   return (
     <div>
