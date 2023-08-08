@@ -81,7 +81,7 @@ const imageUpload = async (req, res) => {
     res.send({
       sucess: true,
       message: "image uploaded successfully",
-      result,
+      data: result.secure_url
     });
   } catch (error) {
     res.send({
