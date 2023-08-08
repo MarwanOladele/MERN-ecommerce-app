@@ -21,13 +21,18 @@ const addNewProduct = async (req, res) => {
 // get all products
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find().sort({ createdAt: -1 });
+    const { seller, categories = [], age = [] } = req.body;
+    let filters = {};
+    if (seller) {
+      filters.seller = seller;
+    }
+    const products = await Product.find(filters).populate('seller').sort({ createdAt: -1 })
     res.send({
       sucess: true,
       message: products,
     });
   } catch (error) {
-    res.send({
+    res.send({ 
       sucess: false,
       message: error.message,
     });
@@ -81,7 +86,7 @@ const imageUpload = async (req, res) => {
     res.send({
       sucess: true,
       message: "image uploaded successfully",
-      data: result.secure_url
+      data: result.secure_url,
     });
   } catch (error) {
     res.send({

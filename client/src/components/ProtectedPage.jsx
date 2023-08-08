@@ -51,7 +51,13 @@ const ProtectedPage = ({ children }) => {
             <i className="ri-shield-user-line"></i>
             <span
               className="underline cursor-pointer uppercase "
-              onClick={() => navigate("/profile")}
+              onClick={() => {
+                if (user.role === "user") {
+                  navigate("/profile");
+                } else {
+                  navigate("/admin");
+                }
+              }}
             >
               {user.name}
             </span>

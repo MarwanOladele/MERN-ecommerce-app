@@ -11,7 +11,7 @@ const {
 const multer = require("multer");
 
 router.post("/add-product", authMiddleware, addNewProduct);
-router.get("/get-products", authMiddleware, getAllProducts);
+router.post("/get-products", authMiddleware, getAllProducts);
 router.put("/edit-product/:id", authMiddleware, editProduct);
 router.delete("/delete-product/:id", authMiddleware, deleteProduct);
 
