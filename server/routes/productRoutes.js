@@ -7,6 +7,7 @@ const {
   editProduct,
   deleteProduct,
   imageUpload,
+  updateProductStatus
 } = require("../controller/productController");
 const multer = require("multer");
 
@@ -14,6 +15,7 @@ router.post("/add-product", authMiddleware, addNewProduct);
 router.post("/get-products", authMiddleware, getAllProducts);
 router.put("/edit-product/:id", authMiddleware, editProduct);
 router.delete("/delete-product/:id", authMiddleware, deleteProduct);
+router.put("/update-product-status/:id", authMiddleware, updateProductStatus);
 
 // get image from pc
 const storage = multer.diskStorage({

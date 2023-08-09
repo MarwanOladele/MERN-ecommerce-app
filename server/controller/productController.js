@@ -26,13 +26,15 @@ const getAllProducts = async (req, res) => {
     if (seller) {
       filters.seller = seller;
     }
-    const products = await Product.find(filters).populate('seller').sort({ createdAt: -1 })
+    const products = await Product.find(filters)
+      .populate("seller")
+      .sort({ createdAt: -1 });
     res.send({
       sucess: true,
       message: products,
     });
   } catch (error) {
-    res.send({ 
+    res.send({
       sucess: false,
       message: error.message,
     });
@@ -96,10 +98,28 @@ const imageUpload = async (req, res) => {
   }
 };
 
+// update product status
+const updateProductStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    await Product.findByIdAndUpdate(req.params.id, { status });
+    res.send({
+      sucess: true,
+      message: "product status successfully",
+    });
+  } catch (error) {
+    res.send({
+      sucess: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   addNewProduct,
   getAllProducts,
   editProduct,
   deleteProduct,
   imageUpload,
+  updateProductStatus,
 };

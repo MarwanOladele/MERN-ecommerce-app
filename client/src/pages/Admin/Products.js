@@ -1,7 +1,7 @@
 import { Button, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetProduct } from "../../apicalls/product";
+import { GetProduct, UpdateProductStatus } from "../../apicalls/product";
 import { SetLoader } from "../../redux/loadersSlice";
 import moment from "moment";
 
@@ -26,6 +26,24 @@ const Products = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  const onStatusUpdate = async (id, status) => {
+    try {
+      dispatch(SetLoader(true));
+      const response = await UpdateProductStatus(id, status);
+      console.log(response);
+      dispatch(SetLoader(false));
+      if (response.sucess) {
+        message.success(response.message);
+        getData();
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      dispatch(SetLoader(false));
+      message.error(error.message);
+    }
+  };
 
   const columns = [
     {
@@ -70,10 +88,47 @@ const Products = () => {
       title: "Action",
       dataIndex: "action",
       render: (text, record) => {
-        return <div className="flex gap-5"></div>;
+        const { status, _id } = record;
+        return (
+          <div className="flex gap-5">
+            {status === "pending" && (
+              <span
+                className="underline cursor-pointer"
+                onClick={() => onStatusUpdate(_id, "approved")}
+              >
+                Approve
+              </span>
+            )}
+            {status === "pending" && (
+              <span
+                className="underline cursor-pointer"
+                onClick={() => onStatusUpdate(_id, "rejected")}
+              >
+                Reject
+              </span>
+            )}
+            {status === "approved" && (
+              <span
+                className="underline cursor-pointer"
+                onClick={() => onStatusUpdate(_id, "blocked")}
+              >
+                Block
+              </span>
+            )}
+            {status === "blocked" && (
+              <span
+                className="underline cursor-pointer"
+                onClick={() => onStatusUpdate(_id, "approved")}
+              >
+                Unblock
+              </span>
+            )}
+          </div>
+        );
       },
     },
   ];
+
   return (
     <div>
       <Table columns={columns} dataSource={products} />
