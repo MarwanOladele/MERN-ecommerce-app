@@ -83,6 +83,7 @@ const Products = () => {
       render: (text, record) => {
         return moment(record.createdAt).format("DD/MM/YYYY hh:mm A");
       },
+      
     },
     {
       title: "Action",
