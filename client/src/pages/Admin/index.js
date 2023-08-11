@@ -1,7 +1,20 @@
 import { Tabs } from "antd";
 import Products from "./Products";
+import Users from "./Users";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Admin = () => {
+  const { user } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user.role !== "admin") {
+      navigate("/");
+    }
+  }, []);
+
   return (
     <div>
       <Tabs>
@@ -9,7 +22,7 @@ const Admin = () => {
           <Products />
         </Tabs.TabPane>
         <Tabs.TabPane tab="Users" key="2">
-          <h1>Users</h1>
+          <Users />
         </Tabs.TabPane>
       </Tabs>
     </div>

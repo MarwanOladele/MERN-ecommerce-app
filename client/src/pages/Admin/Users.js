@@ -1,21 +1,21 @@
 import { Button, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetProduct, UpdateProductStatus } from "../../apicalls/product";
 import { SetLoader } from "../../redux/loadersSlice";
 import moment from "moment";
+import { GetAllUsers, UpdateUserStatus } from "../../apicalls/user";
 
-const Products = () => {
-  const [products, setProducts] = useState([]);
+const Users = () => {
+  const [users, setUsers] = useState([]);
   const dispatch = useDispatch();
 
   const getData = async () => {
     try {
       dispatch(SetLoader(true));
-      const response = await GetProduct(null);
+      const response = await GetAllUsers(null);
       if (response.sucess) {
         dispatch(SetLoader(false));
-        setProducts(response.message);
+        setUsers(response.data);
       }
     } catch (error) {
       dispatch(SetLoader(false));
@@ -30,7 +30,7 @@ const Products = () => {
   const onStatusUpdate = async (id, status) => {
     try {
       dispatch(SetLoader(true));
-      const response = await UpdateProductStatus(id, status);
+      const response = await UpdateUserStatus(id, status);
       console.log(response);
       dispatch(SetLoader(false));
       if (response.sucess) {
@@ -47,31 +47,26 @@ const Products = () => {
 
   const columns = [
     {
-      title: "Product",
+      title: "Name",
       dataIndex: "name",
     },
     {
-      title: "Seller",
-      dataIndex: "name",
+      title: "Email",
+      dataIndex: "email",
+    },
+    {
+      title: "Role",
+      dataIndex: "role",
       render: (text, record) => {
-        return record.seller.name;
+        return record.role.toUpperCase();
       },
     },
     {
-      title: "Description",
-      dataIndex: "description",
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
+      title: "Created At",
+      dataIndex: "createdAt",
+      render: (text, record) => {
+        return moment(record.createdAt).format("DD/MM/YYYY hh:mm A");
+      },
     },
     {
       title: "Status",
@@ -81,36 +76,13 @@ const Products = () => {
       },
     },
     {
-      title: "Added on",
-      dataIndex: "createdAt",
-      render: (text, record) => {
-        return moment(record.createdAt).format("DD/MM/YYYY hh:mm A");
-      },
-    },
-    {
       title: "Action",
       dataIndex: "action",
       render: (text, record) => {
         const { status, _id } = record;
         return (
           <div className="flex gap-5">
-            {status === "pending" && (
-              <span
-                className="underline cursor-pointer"
-                onClick={() => onStatusUpdate(_id, "approved")}
-              >
-                Approve
-              </span>
-            )}
-            {status === "pending" && (
-              <span
-                className="underline cursor-pointer"
-                onClick={() => onStatusUpdate(_id, "rejected")}
-              >
-                Reject
-              </span>
-            )}
-            {status === "approved" && (
+            {status === "active" && (
               <span
                 className="underline cursor-pointer"
                 onClick={() => onStatusUpdate(_id, "blocked")}
@@ -121,7 +93,7 @@ const Products = () => {
             {status === "blocked" && (
               <span
                 className="underline cursor-pointer"
-                onClick={() => onStatusUpdate(_id, "approved")}
+                onClick={() => onStatusUpdate(_id, "active")}
               >
                 Unblock
               </span>
@@ -134,9 +106,9 @@ const Products = () => {
 
   return (
     <div>
-      <Table columns={columns} dataSource={products} />
+      <Table columns={columns} dataSource={users} />
     </div>
   );
 };
 
-export default Products;
+export default Users;

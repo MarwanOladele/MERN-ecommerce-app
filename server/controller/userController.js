@@ -32,6 +32,11 @@ const login = async (req, res) => {
       throw new Error("User not Found");
     }
 
+    // check if the user is active
+    if (user.status !== 'active') {
+      throw new Error("User Account is Blocked, Please contact the administrator");
+    }
+
     // validate password
     const validatePassword = await bcrypt.compare(
       req.body.password,
@@ -67,10 +72,38 @@ const getCurrentUser = async (req, res) => {
   } catch (error) {
     res.send({ sucess: false, message: error.message });
   }
-}
+};
+
+const getAllUser = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.send({
+      sucess: true,
+      message: "Users fetched successfully",
+      data: users,
+    });
+  } catch (error) {
+    res.send({ sucess: false, message: error.message });
+  }
+};
+
+const UpdateUserStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    await User.findByIdAndUpdate(req.params.id, { status });
+    res.send({
+      sucess: true,
+      message: "User Update successfully",
+    });
+  } catch (error) {
+    res.send({ sucess: false, message: error.message });
+  }
+};
 
 module.exports = {
   registerUser,
   login,
   getCurrentUser,
+  getAllUser,
+  UpdateUserStatus,
 };
