@@ -2,7 +2,7 @@ import { Button, Upload, message } from "antd";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { SetLoader } from "../../../redux/loadersSlice";
-import { UploadProductImage } from "../../../apicalls/product";
+import { EditProduct, UploadProductImage } from "../../../apicalls/product";
 
 const Images = ({
   selectedProduct,
@@ -28,14 +28,32 @@ const Images = ({
         message.success(response.message);
         setImages([...images, response.data]);
         setShowPreview(false);
-        setFile(null)
+        setFile(null);
         getData();
       } else {
         message.error(response.message);
         dispatch(SetLoader(false));
       }
     } catch (error) {
-      dispatch(SetLoader(false)); 
+      dispatch(SetLoader(false));
+      message.error(error.message);
+    }
+  };
+
+  const deleteImage = async (image) => {
+    try {
+      dispatch(SetLoader(true));
+      const updatedImage = images.filter((img) => img !== image);
+      const updatedProduct = { ...selectedProduct, images: updatedImage };
+      const response = await EditProduct(selectedProduct._id, updatedProduct);
+      if (response.sucess) {
+        dispatch(SetLoader(false));
+        message.success(response.message);
+        setImages(updatedImage);
+        getData();
+      }
+    } catch (error) {
+      dispatch(SetLoader(false));
       message.error(error.message);
     }
   };
@@ -46,7 +64,10 @@ const Images = ({
           return (
             <div className="flex gap-2 border-solid border-gray-500 rounded p-2 items-center">
               <img src={image} alt="" className="h-20 w-20 object-cover" />
-              <i className="ri-delete-bin-line" onClick={() => {}}></i>
+              <i
+                className="ri-delete-bin-line"
+                onClick={() => deleteImage(image)}
+              ></i>
             </div>
           );
         })}

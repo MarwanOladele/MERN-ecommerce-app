@@ -113,7 +113,7 @@ const updateProductStatus = async (req, res) => {
       message: error.message,
     });
   }
-};
+}; 
 
 module.exports = {
   addNewProduct,
