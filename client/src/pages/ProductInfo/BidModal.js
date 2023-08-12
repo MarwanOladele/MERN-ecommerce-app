@@ -1,8 +1,18 @@
-import { Form, Input, Modal } from "antd";
+import { Form, Input, Modal, message } from "antd";
 import { useRef } from "react";
+import { useDispatch } from "react-redux";
+import { PlaceBid } from "../../apicalls/bid";
+import { SetLoader } from "../../redux/loadersSlice";
 
-const BidModal = ({ showBidModel, setShowBidModel, product, getData }) => {
+const BidModal = ({
+  showBidModel,
+  setShowBidModel,
+  product,
+  getData,
+  user,
+}) => {
   const formRef = useRef(null);
+  const dispatch = useDispatch();
   const rules = [
     {
       required: true,
@@ -11,7 +21,24 @@ const BidModal = ({ showBidModel, setShowBidModel, product, getData }) => {
   ];
 
   const onFinish = async (values) => {
-    console.log(values);
+    try {
+      dispatch(SetLoader(true));
+      const response = await PlaceBid({
+        ...values,
+        product: product._id,
+        seller: product.seller._id,
+        buyer: user._id,
+      });
+      message.success(response.message);
+      if (response.sucess) {
+        dispatch(SetLoader(false));
+        getData();
+        setShowBidModel(false);
+      }
+    } catch (error) {
+      dispatch(SetLoader(false));
+      message.error(error.message);
+    }
   };
 
   return (

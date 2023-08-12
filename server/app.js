@@ -4,7 +4,8 @@ const port = process.env.PORT || 5000;
 require("dotenv").config();
 const connectDB = require("./db/connect");
 const users = require("./routes/userRoutes");
-const products = require('./routes/productRoutes')
+const products = require("./routes/productRoutes");
+const bids = require("./routes/bidRoutes");
 
 // middleware
 app.use(express.json());
@@ -13,7 +14,8 @@ app.use(express.json());
 app.use("/api/users", users);
 // import product routes
 app.use("/api/products", products);
-
+// import bid routes
+app.use("/api/bids", bids);
 
 const start = async () => {
   try {
