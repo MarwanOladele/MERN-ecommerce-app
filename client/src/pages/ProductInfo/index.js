@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { GetProductById } from "../../apicalls/product";
 import { SetLoader } from "../../redux/loadersSlice";
 import { useDispatch } from "react-redux";
-import { message } from "antd";
+import { Button, message } from "antd";
 import { useParams } from "react-router-dom";
 import DIvider from "../../components/DIvider";
 import moment from "moment";
+import BidModal from "./BidModal";
 
 const ProductInfo = () => {
+  const [showBidModel, setShowBidModel] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [product, setProduct] = useState(null);
   const dispatch = useDispatch();
@@ -40,7 +42,7 @@ const ProductInfo = () => {
             <img
               src={product.images[selectedImageIndex]}
               alt={product.name}
-              className="w-full h-[500px] object-cover rounded-md"
+              className="w-full h-[450px] object-cover rounded-md"
             />
 
             <div className="flex gap-5">
@@ -117,8 +119,25 @@ const ProductInfo = () => {
                 <span className="">{product.seller.email}</span>
               </div>
             </div>
+            <DIvider />
+            <div className="flex flex-col">
+              <div className="flex justify-between">
+                <h1 className="text-2xl font-semibold text-orange-900">Bids</h1>
+                <Button onClick={() => setShowBidModel(!showBidModel)}>
+                  New Bid
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
+        {showBidModel && (
+          <BidModal
+            showBidModel={showBidModel}
+            setShowBidModel={setShowBidModel}
+            product={product}
+            getData={getData}
+          />
+        )}
       </div>
     )
   );
