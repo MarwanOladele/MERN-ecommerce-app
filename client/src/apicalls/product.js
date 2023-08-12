@@ -26,6 +26,16 @@ export const GetProduct = async (filters) => {
   }
 };
 
+// get product by id
+export const GetProductById = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/api/products/get-product-by-id/${id}`);
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
+};
+
 // edit product
 export const EditProduct = async (id, payload) => {
   try {
@@ -65,9 +75,12 @@ export const UploadProductImage = async (payload) => {
 
 export const UpdateProductStatus = async (id, status) => {
   try {
-    const response = await axiosInstance.put(`/api/products/update-product-status/${id}`, {
-      status,
-    });
+    const response = await axiosInstance.put(
+      `/api/products/update-product-status/${id}`,
+      {
+        status,
+      }
+    );
     return response.data;
   } catch (error) {
     return error.message;

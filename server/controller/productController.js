@@ -41,6 +41,22 @@ const getAllProducts = async (req, res) => {
   }
 };
 
+// get products by Id
+const getProductByID = async (req, res) => {
+  try {
+    const products = await Product.findById(req.params.id).populate("seller");
+    res.send({
+      sucess: true,
+      message: products,
+    });
+  } catch (error) {
+    res.send({
+      sucess: false,
+      message: error.message,
+    });
+  }
+};
+
 // edit product
 const editProduct = async (req, res) => {
   try {
@@ -113,7 +129,7 @@ const updateProductStatus = async (req, res) => {
       message: error.message,
     });
   }
-}; 
+};
 
 module.exports = {
   addNewProduct,
@@ -122,4 +138,5 @@ module.exports = {
   deleteProduct,
   imageUpload,
   updateProductStatus,
+  getProductByID
 };
