@@ -39,6 +39,7 @@ const ProductInfo = () => {
     getData();
   }, []);
 
+
   return (
     product && (
       <div>
@@ -126,7 +127,7 @@ const ProductInfo = () => {
               </div>
             </div>
             <DIvider />
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-2">
               <div className="flex justify-between">
                 <h1 className="text-2xl font-semibold text-orange-900">Bids</h1>
                 <Button
@@ -136,6 +137,27 @@ const ProductInfo = () => {
                   New Bid
                 </Button>
               </div>
+              {product.ShowBidsOnProductPage &&
+                product.bids.map((bid) => {
+                  return (
+                    <div className="border border-gray-400 border-solid p-2 rounded">
+                      <div className="flex justify-between text-gray-700 mb-1">
+                        <span>Name</span>
+                        <span>{bid.buyer.name}</span>
+                      </div>
+                      <div className="flex justify-between text-gray-600 mb-1">
+                        <span>Bid Amount</span>
+                        <span>${bid.bidAmount}</span>
+                      </div>
+                      <div className="flex justify-between text-gray-600 mb-1">
+                        <span>Bid Placed On</span>
+                        <span>
+                          {moment(bid.createdAt).format("MMM D , YYYY hh:mm A")}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>

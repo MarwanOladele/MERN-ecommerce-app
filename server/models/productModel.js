@@ -47,6 +47,10 @@ const productSchema = new mongoose.Schema(
       default: false,
       required: true,
     },
+    ShowBidsOnProductPage: {
+      type: Boolean,
+      default: false,
+    },
     seller: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
