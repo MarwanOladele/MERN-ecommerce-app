@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { DeleteProduct, GetProduct } from "../../../apicalls/product";
 import { SetLoader } from "../../../redux/loadersSlice";
 import moment from "moment";
+import Bids from "./Bids";
 
 const Products = () => {
+  const [showBidsModal, setShowBidsModal] = useState(false);
   const [showProductForm, setShowProductForm] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [products, setProducts] = useState([]);
@@ -86,7 +88,7 @@ const Products = () => {
       dataIndex: "action",
       render: (text, record) => {
         return (
-          <div className="flex gap-5">
+          <div className="flex gap-5 items-center">
             <i
               className="ri-delete-bin-line"
               onClick={() => deleteProduct(record._id)}
@@ -98,6 +100,15 @@ const Products = () => {
                 setShowProductForm(true);
               }}
             ></i>
+            <span
+              className="underline cursor-pointer"
+              onClick={() => {
+                setSelectedProduct(record);
+                setShowBidsModal(true);
+              }}
+            >
+              Show bids
+            </span>
           </div>
         );
       },
@@ -124,6 +135,13 @@ const Products = () => {
           selectedProduct={selectedProduct}
           setSelectedProduct={setSelectedProduct}
           getData={getData}
+        />
+      )}
+      {showBidsModal && (
+        <Bids
+          showBidsModal={showBidsModal}
+          setShowBidsModal={setShowBidsModal}
+          selectedProduct={selectedProduct}
         />
       )}
     </div>
