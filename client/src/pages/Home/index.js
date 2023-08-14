@@ -37,10 +37,6 @@ const Home = () => {
 
   useEffect(() => {
     getData();
-  }, []);
-
-  useEffect(() => {
-    console.log(filter);
   }, [filter]);
 
   return (

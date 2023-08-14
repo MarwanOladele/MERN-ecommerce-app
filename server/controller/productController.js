@@ -21,7 +21,7 @@ const addNewProduct = async (req, res) => {
 // get all products
 const getAllProducts = async (req, res) => {
   try {
-    const { seller, categories = [], age = [], status } = req.body;
+    const { seller, category = [], age = [], status } = req.body;
     let filters = {};
     if (seller) {
       filters.seller = seller;
@@ -29,6 +29,21 @@ const getAllProducts = async (req, res) => {
     if (status) {
       filters.status = status;
     }
+
+    // filter by category
+    if (category.length > 0) {
+      filters.category = { $in: category };
+    }
+
+    // filter by age
+    if (age.length > 0) {
+      age.forEach((item) => {
+        const fromAge = item.split("-")[0];
+        const toAge = item.split("-")[1];
+        filters.age = { $gte: fromAge, $lt: toAge };
+      });
+    }
+
     const products = await Product.find(filters)
       .populate("seller")
       .sort({ createdAt: -1 });
@@ -141,5 +156,5 @@ module.exports = {
   deleteProduct,
   imageUpload,
   updateProductStatus,
-  getProductByID
+  getProductByID,
 };
