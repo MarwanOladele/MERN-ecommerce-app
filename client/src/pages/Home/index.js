@@ -9,7 +9,11 @@ import Filters from "./Filters";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
-  const [filter, setFilter] = useState({ status: "approved" });
+  const [filter, setFilter] = useState({
+    status: "approved",
+    category: [],
+    age: [],
+  });
   const [showFilters, setShowFilters] = useState(true);
 
   const dispatch = useDispatch();
@@ -35,14 +39,18 @@ const Home = () => {
     getData();
   }, []);
 
+  useEffect(() => {
+    console.log(filter);
+  }, [filter]);
+
   return (
     <div className="flex gap-5">
       {showFilters && (
         <Filters
           showFilters={showFilters}
           setShowFilters={setShowFilters}
-          filter={filter}
-          setFilter={setFilter}
+          filters={filter}
+          setFilters={setFilter}
         />
       )}
       <div className="w-full">

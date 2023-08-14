@@ -47,3 +47,7 @@ i{
   font-size: 20px !important;
   cursor: pointer !important;
 }
+
+.max-width {
+  max-width: max-content !important;
+}
