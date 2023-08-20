@@ -33,8 +33,10 @@ const login = async (req, res) => {
     }
 
     // check if the user is active
-    if (user.status !== 'active') {
-      throw new Error("User Account is Blocked, Please contact the administrator");
+    if (user.status !== "active") {
+      throw new Error(
+        "User Account is Blocked, Please contact the administrator"
+      );
     }
 
     // validate password
