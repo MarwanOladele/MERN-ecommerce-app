@@ -6,6 +6,7 @@ const connectDB = require("./db/connect");
 const users = require("./routes/userRoutes");
 const products = require("./routes/productRoutes");
 const bids = require("./routes/bidRoutes");
+const notifications = require("./routes/notificationRoutes");
 
 // middleware
 app.use(express.json());
@@ -16,6 +17,8 @@ app.use("/api/users", users);
 app.use("/api/products", products);
 // import bid routes
 app.use("/api/bids", bids);
+// import notifications routes
+app.use("/api/notification", notifications);
 
 const start = async () => {
   try {

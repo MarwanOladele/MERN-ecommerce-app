@@ -5,11 +5,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SetLoader } from "../redux/loadersSlice";
 import { SetUser } from "../redux/usersSlice";
+import { Avatar, Badge, Space } from "antd";
+import Notification from "./Notification";
 
 const ProtectedPage = ({ children }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
+  const [notifications, setNotifications] = useState([]);
+  const [showNotification, setShowNotification] = useState(false);
 
   const validateToken = async () => {
     try {
@@ -47,8 +51,25 @@ const ProtectedPage = ({ children }) => {
           >
             MARWAN MP
           </h1>
-          <div className="bg-white py-2 px-5 rounded flex gap-1 items-center">
+          <div className="bg-white py-2 px-5 rounded flex gap-3 items-center">
             <i className="ri-shield-user-line"></i>
+
+            <Space size="middle">
+              <Badge
+                count={
+                  notifications?.filter((notification) => !notification.read)
+                    .length
+                }
+                onClick={() => setShowNotification(true)}
+              >
+                <Avatar
+                  shape="circle"
+                  size="medium"
+                  icon={<i className="ri-notification-line"></i>}
+                />
+              </Badge>
+            </Space>
+
             <span
               className="underline cursor-pointer uppercase "
               onClick={() => {
@@ -72,6 +93,15 @@ const ProtectedPage = ({ children }) => {
         </div>
         {/* content */}
         <div className="p-5">{children}</div>
+
+        {showNotification && (
+          <Notification
+            notifications={notifications}
+            reloadNotification={setNotifications}
+            showNotification={showNotification}
+            setShowNotification={setShowNotification}
+          />
+        )}
       </div>
     )
   );
