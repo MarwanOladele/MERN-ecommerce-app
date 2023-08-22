@@ -7,6 +7,7 @@ import { SetLoader } from "../redux/loadersSlice";
 import { SetUser } from "../redux/usersSlice";
 import { Avatar, Badge, Space } from "antd";
 import Notification from "./Notification";
+import { GetNotification } from "../apicalls/notification";
 
 const ProtectedPage = ({ children }) => {
   const navigate = useNavigate();
@@ -33,9 +34,26 @@ const ProtectedPage = ({ children }) => {
     }
   };
 
+  const getNotifications = async () => {
+    try {
+      dispatch(SetLoader(true));
+      const response = await GetNotification();
+      dispatch(SetLoader(false));
+      if (response.sucess) {
+        setNotifications(response.message);
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      dispatch(SetLoader(false));
+      message.error(error.message);
+    }
+  };
+
   useEffect(() => {
     if (localStorage.getItem("token")) {
       validateToken();
+      getNotifications();
     } else {
       navigate("/login");
     }
