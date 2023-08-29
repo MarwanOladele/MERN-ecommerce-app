@@ -15,6 +15,7 @@ const Notification = ({
       centered
       width={1000}
     >
+      
       <div className="flex flex-col gap-2">
         {notifications.map((notification) => {
           return (
@@ -26,6 +27,7 @@ const Notification = ({
           );
         })}
       </div>
+
     </Modal>
   );
 };
