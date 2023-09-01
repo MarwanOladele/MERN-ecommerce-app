@@ -21,6 +21,8 @@ const Notification = ({
             <div className="flex items-center gap-2 border border-solid p-2 flex-col">
               <h1 className="">{notification.title}</h1>
               <hr />
+
+              
               <span>{notification.message} </span>
             </div>
           );
