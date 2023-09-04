@@ -21,18 +21,19 @@ const Register = () => {
       dispatch(SetLoader(true));
       const response = await RegisterUser(values);
       dispatch(SetLoader(false));
-      if (response) {
+      if (response.sucess) {
+        navigate("/login");
         message.success(response.message);
-        navigate('/login')
       } else {
         throw new Error(response.message);
       }
-
     } catch (error) {
       dispatch(SetLoader(false));
       message.error(error.message);
     }
   };
+
+  
 
   useEffect(() => {
     if (localStorage.getItem("token")) {

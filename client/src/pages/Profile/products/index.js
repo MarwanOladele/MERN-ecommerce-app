@@ -53,12 +53,21 @@ const Products = () => {
 
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
+      title: "Product",
+      dataIndex: "image",
+      render: (text, record) => {
+        return (
+          <img
+            src={record?.images?.length > 0 ? record.images[0] : ""}
+            alt=""
+            className="w-14 h-14 object-cover rounded-md"
+          />
+        );
+      },
     },
     {
-      title: "Description",
-      dataIndex: "description",
+      title: "Name",
+      dataIndex: "name",
     },
     {
       title: "Price",
