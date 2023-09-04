@@ -7,7 +7,7 @@ import { SetLoader } from "../redux/loadersSlice";
 import { SetUser } from "../redux/usersSlice";
 import { Avatar, Badge, Space } from "antd";
 import Notification from "./Notification";
-import { GetNotification } from "../apicalls/notification";
+import { GetNotification, ReadAllNotification } from "../apicalls/notification";
 
 const ProtectedPage = ({ children }) => {
   const navigate = useNavigate();
@@ -36,16 +36,13 @@ const ProtectedPage = ({ children }) => {
 
   const getNotifications = async () => {
     try {
-      dispatch(SetLoader(true));
       const response = await GetNotification();
-      dispatch(SetLoader(false));
       if (response.sucess) {
         setNotifications(response.message);
       } else {
         message.error(response.message);
       }
     } catch (error) {
-      dispatch(SetLoader(false));
       message.error(error.message);
     }
   };
@@ -58,6 +55,19 @@ const ProtectedPage = ({ children }) => {
       navigate("/login");
     }
   }, []);
+
+  const ReadNotification = async () => {
+    try {
+      const response = await ReadAllNotification();
+      if (response.sucess) {
+        getNotifications();
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
   return (
     user && (
       <div className="">
@@ -78,7 +88,10 @@ const ProtectedPage = ({ children }) => {
                   notifications?.filter((notification) => !notification.read)
                     .length
                 }
-                onClick={() => setShowNotification(true)}
+                onClick={() => {
+                  ReadNotification();
+                  setShowNotification(true);
+                }}
               >
                 <Avatar
                   shape="circle"

@@ -35,10 +35,10 @@ export const DeleteNotification = async (id) => {
   }
 };
 
-export const ReadAllNotification = async (id) => {
+export const ReadAllNotification = async () => {
   try {
     const response = await axiosInstance.put(
-      `/api/notification/read-all-notifications/${id}`
+      `/api/notification/read-all-notifications`
     );
     return response.data;
   } catch (error) {

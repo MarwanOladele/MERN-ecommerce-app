@@ -48,6 +48,10 @@ const readAllNotifications = async (req, res) => {
       { user: req.body.userId, read: false },
       { $set: { read: true } }
     );
+    res.send({
+      sucess: true,
+      message: "notification read successfully",
+    });
   } catch (error) {
     res.send({ sucess: false, message: error.message });
   }
