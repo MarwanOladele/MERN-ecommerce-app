@@ -6,6 +6,7 @@ import { SetLoader } from "../../redux/loadersSlice";
 import Divider from "../../components/DIvider";
 import { useNavigate } from "react-router-dom";
 import Filters from "./Filters";
+import moment from "moment";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -84,7 +85,9 @@ const Home = () => {
                 />
                 <div className="px-2 flex flex-col gap-1">
                   <h1 className="text-lg font-semibold">{product.name}</h1>
-                  <p className="text-sm text-gray-500">{product.description}</p>
+                  <p className="text-sm text-gray-500">
+                    {product.age} {product.age === 1 ? "year" : "years"} old
+                  </p>
                   <Divider />
                   <span className="text-xl font-semibold text-green-700">
                     ${product.price}

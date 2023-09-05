@@ -50,6 +50,7 @@ const Images = ({
         dispatch(SetLoader(false));
         message.success(response.message);
         setImages(updatedImage);
+        setFile(null);
         getData();
       }
     } catch (error) {
@@ -81,6 +82,7 @@ const Images = ({
           setShowPreview(true);
         }}
         showUploadList={showPreview}
+        fileList={file ? [file] : []}
       >
         <Button type="dashed">Upload Image</Button>
       </Upload>
