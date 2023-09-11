@@ -25,8 +25,6 @@ const addNewProduct = async (req, res) => {
     res.send({
       sucess: true,
       message: "Product added successfully",
-
-
       
     });
   } catch (error) {
