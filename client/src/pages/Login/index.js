@@ -29,8 +29,6 @@ const Login = () => {
       } else {
         throw new Error(response.message);
       }
-
-      
     } catch (error) {
       dispatch(SetLoader(false));
       message.error(error.message);
